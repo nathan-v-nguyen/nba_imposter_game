@@ -42,17 +42,6 @@ def random_nba_player() -> tuple[str, str]:
   player = row['name']
   hint = row['hint']
   return player, hint
-  
-
-def assign_roles(player_list: list[str], imposter: str) -> dict:
-  '''Assign roles to every player and return dictionary'''
-  player_dict = {}
-  for player in player_list:
-    if player == imposter:
-      player_dict[player] = {'role':'imposter'}
-    else:
-      player_dict[player] = {'role':'normal'}
-  return player_dict
 
 
 def reveal_roles(game_dict: dict) -> None:
@@ -75,6 +64,12 @@ def reveal_roles(game_dict: dict) -> None:
   print('Begin the Game')
 
 
+def create_game_state(player_list: list[str], imposter: str, nba_player: str, hint: str) -> dict:
+  '''Returns game state dict'''
+  game_dict = {'player_list': player_list, 'imposter': imposter, 'nba_player': nba_player, 'hint': hint}
+  return game_dict
+
+
       
 
 
@@ -83,9 +78,8 @@ def main():
   player_list = collect_players(player_num)
   imposter = choose_imposter(player_list)
   nba_player, hint = random_nba_player()
-  player_roles = assign_roles(player_list, imposter)
+  game_dict = create_game_state(player_list, imposter, nba_player, hint)
 
-  game_dict = {'player_num':player_num, 'player_list':player_list, 'imposter':imposter,'nba_player':nba_player, 'hint':hint}
 
   reveal_roles(game_dict)
   
